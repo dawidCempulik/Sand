@@ -15,10 +15,10 @@ class Grid:
                 self.GRID[y].append([elements.Air()])
 
     def get(self, pos: tuple) -> elements.Element:
-        return self.GRID[pos[1]][pos[0]]
+        return self.GRID[pos[1]][-pos[0]]
 
     def set(self, pos: tuple, element: elements.Element):
-        self.GRID[pos[1]][pos[0]] = element
+        self.GRID[pos[1]][-pos[0]] = element
 
     def chunk(self, pos: tuple, size: tuple) -> Self:
         grid = Grid(size)
@@ -27,3 +27,7 @@ class Grid:
                 grid.set((i, j), self.get((pos[0] + i, pos[1] + j)))
 
         return grid
+
+    def replace(self, pos1: tuple, pos2: tuple):
+        temp = self.get(pos2)
+        self.set(pos2, self.get(pos1))

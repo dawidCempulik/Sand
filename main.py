@@ -1,20 +1,20 @@
 import pygame
 
-WIDTH, HEIGHT = 800, 800
+WIDTH, HEIGHT = 1200, 800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sand")
 
 FPS = 60
-GRID_SIZE = (20, 20)
+GRID_SIZE = (30, 20)
 
 
 def draw_grid():
     for x in range(GRID_SIZE[0] - 1):
         posx = WIDTH / GRID_SIZE[0] * (x + 1)
-        pygame.draw.line(WIN, (255,255,255), (posx, 0), (posx, HEIGHT))
-    for y in range(GRID_SIZE[0] - 1):
+        pygame.draw.line(WIN, (50, 50, 50), (posx, 0), (posx, HEIGHT))
+    for y in range(GRID_SIZE[1] - 1):
         posy = HEIGHT / GRID_SIZE[1] * (y + 1)
-        pygame.draw.line(WIN, (255,255,255), (0, posy), (WIDTH, posy))
+        pygame.draw.line(WIN, (50, 50, 50), (0, posy), (WIDTH, posy))
 
 
 def draw_window():
