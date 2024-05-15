@@ -52,16 +52,3 @@ class Grid:
             self.set(pos, element)
             return True
         return False
-
-    def validate_pos(self, pos:tuple) -> tuple:
-        newpos = []
-        for i in range(len(pos)):
-            if pos[i] < 0:
-                newpos.append(self.SIZE[i] + pos[i])
-                continue
-            if pos[i] >= self.SIZE[i]:
-                newpos.append(pos[i] - self.SIZE[i])
-                continue
-            newpos.append(pos[i])
-
-        return tuple(newpos)
