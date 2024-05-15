@@ -19,28 +19,49 @@ class Grid:
         for x in range(self.SIZE[0]):
             for y in range(self.SIZE[1]):
                 pos = (x, y)
-                self.get(pos).draw(surface, pos)
+                self.get(pos).draw(surface, pos, self.SIZE)
 
     def execute_logic(self):
         for x in range(self.SIZE[0]):
             for y in range(self.SIZE[1]):
                 pos = (x, y)
-                self.get(pos).logic(self, pos)
+                element = self.get(pos)
+                if element.computed:
+                    continue
+                element.logic(self, pos)
+
+        for x in range(self.SIZE[0]):
+            for y in range(self.SIZE[1]):
+                pos = (x, y)
+                element = self.get(pos)
+                element.computed = False
 
     def get(self, pos: tuple) -> elements.Element:
-        return self.GRID[-pos[1] - 1][pos[0]]
+        return self.GRID[pos[1]][pos[0]]
 
     def set(self, pos: tuple, element: elements.Element):
-        self.GRID[-pos[1] - 1][pos[0]] = element
+        self.GRID[pos[1]][pos[0]] = element
 
-    def replace(self, pos1: tuple, pos2: tuple):
-        temp = self.get(pos2)
-        self.set(pos2, self.get(pos1))
+    def replace(self, current: tuple, new: tuple):
+        temp = self.get(new)
+        self.set(new, self.get(current))
+        self.set(current, temp)
 
-    def chunk(self, pos: tuple, size: tuple) -> Self:
-        grid = Grid(size)
-        for i in range(size[0]):
-            for j in range(size[1]):
-                grid.set((i, j), self.get((pos[0] + i, pos[1] + j)))
+    def place(self, pos: tuple, element: elements.Element) -> bool:
+        if isinstance(self.get(pos), elements.Air):
+            self.set(pos, element)
+            return True
+        return False
 
-        return grid
+    def validate_pos(self, pos:tuple) -> tuple:
+        newpos = []
+        for i in range(len(pos)):
+            if pos[i] < 0:
+                newpos.append(self.SIZE[i] + pos[i])
+                continue
+            if pos[i] >= self.SIZE[i]:
+                newpos.append(pos[i] - self.SIZE[i])
+                continue
+            newpos.append(pos[i])
+
+        return tuple(newpos)
